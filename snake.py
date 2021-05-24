@@ -3,7 +3,9 @@ import random
 import math
 
 pygame.init()
+font = pygame.font.Font('arial.ttf', 25)
 
+# ---constantes
 BLOCK_SIZE=20
 
 SPEED=40
@@ -14,6 +16,8 @@ RED=(200,0,0)
 BLUE1=(0,0,255)
 BLUE2=(0,100,255)
 BLACK=(0,0,0)
+
+
 
 class SnakeGame:
     def __init__(self,w=640,h=480):
@@ -55,7 +59,6 @@ class SnakeGame:
 
 #6 return game over and score
         game_over=False
-        pygame.display.update()
         return game_over,self.score
 
     def updateUi(self):
@@ -69,6 +72,10 @@ class SnakeGame:
         xPositionFood=((self.food-math.floor(self.food/24)*24)-1)*BLOCK_SIZE
         yPositionFood=math.floor(self.food/24)*BLOCK_SIZE
         pygame.draw.rect(self.display,RED,pygame.Rect(xPositionFood,yPositionFood,BLOCK_SIZE,BLOCK_SIZE))
+
+        text = font.render("Score: " + str(self.score), True, WHITE)
+        self.display.blit(text, [0, 0])
+        pygame.display.update()
 
 if __name__=='__main__':
     game=SnakeGame()
