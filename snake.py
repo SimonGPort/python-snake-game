@@ -27,8 +27,9 @@ class SnakeGame:
         self.score=0
         # l'array des lives represente la position de chanque morceau du corps, a l'index 0 il y a la tete
         self.body=[280,279,278]
+        self.direction='RIGHT'
         self.food=None
-        self.directino='RIGHT'
+        self.placeFood()
 
     def placeFood(self):
         x=random.randint(1,32)
@@ -47,13 +48,14 @@ class SnakeGame:
 #3 check if game over
 
 #4 place new food or just move
-
+        # self.placeFood()
 #5 update ui and clock
         self.updateUi()
-        self.click.tick(SPEED)
+        self.clock.tick(SPEED)
 
 #6 return game over and score
-        game_over=false
+        game_over=False
+        pygame.display.update()
         return game_over,self.score
 
     def updateUi(self):
@@ -62,7 +64,11 @@ class SnakeGame:
             xPosition=((point-math.floor(point/24)*24)-1)*BLOCK_SIZE
             yPosition=math.floor(point/24)*BLOCK_SIZE
             pygame.draw.rect(self.display,BLUE1,pygame.Rect(xPosition,yPosition,BLOCK_SIZE,BLOCK_SIZE))
+            pygame.draw.rect(self.display,BLUE2,pygame.Rect(xPosition+4,yPosition+4,12,12))
 
+        xPositionFood=((self.food-math.floor(self.food/24)*24)-1)*BLOCK_SIZE
+        yPositionFood=math.floor(self.food/24)*BLOCK_SIZE
+        pygame.draw.rect(self.display,RED,pygame.Rect(xPositionFood,yPositionFood,BLOCK_SIZE,BLOCK_SIZE))
 
 if __name__=='__main__':
     game=SnakeGame()
