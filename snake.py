@@ -8,7 +8,7 @@ font = pygame.font.Font('arial.ttf', 25)
 # ---constantes
 BLOCK_SIZE=20
 
-SPEED=40
+SPEED=10
 
 # rgb colors
 WHITE=(255,255,255)
@@ -46,9 +46,22 @@ class SnakeGame:
 
     def play_step(self):
 #1 collect user input
+        for event in pygame.event.get():
+            if event.type==pygame.QUIT:
+                pygame.quit()
+                quit()
+            if event.type==pygame.KEYDOWN:
+                if event.key==pygame.K_LEFT:
+                    self.direction='LEFT'
+                if event.key==pygame.K_RIGHT:
+                    self.direction='RIGHT'
+                if event.key==pygame.K_UP:
+                    self.direction='UP'
+                if event.key==pygame.K_DOWN:
+                    self.direction='DOWN'
 
 #2 move
-
+        self.move()
 #3 check if game over
 
 #4 place new food or just move
@@ -61,8 +74,30 @@ class SnakeGame:
         game_over=False
         return game_over,self.score
 
+    def move(self):
+        direction=self.direction
+        body=self.body.copy()
+        print('old body:',body)
+        print('direction:',direction)
+        if direction=='RIGHT':
+            print('body1:',body[0],body[0]+1)
+            body[0]=body[0]+1
+            print('body2:',body[0],body[0]+1)
+        if direction=='LEFT':
+            body[0]=body[0]-1
+        if direction=='UP':
+            body[0]=body[0]-24
+        if direction=='DOWN':
+            body[0]=body[0]+24
+        print('new body:',body)
+
+        for index, bodyPart in enumerate(self.body):
+            if index != 0:
+                body[index]=self.body[index-1]
+        self.body=body
+
     def updateUi(self):
-        self.display.fill(BLACK)
+        self.display.fill(WHITE)
         for point in self.body:
             xPosition=((point-math.floor(point/24)*24)-1)*BLOCK_SIZE
             yPosition=math.floor(point/24)*BLOCK_SIZE
