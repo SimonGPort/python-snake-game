@@ -8,7 +8,7 @@ font = pygame.font.Font('arial.ttf', 25)
 # ---constantes
 BLOCK_SIZE=20
 
-SPEED=1
+SPEED=10
 
 # rgb colors
 WHITE=(255,255,255)
@@ -37,12 +37,13 @@ class SnakeGame:
 
     def placeFood(self):
         x=random.randint(1,32)
-        y=random.randint(0,24)
-        foodPosition=32*x+y
+        y=random.randint(1,24)
+        foodPosition=x*y
         if foodPosition in self.body:
-            self.placeFood
+            self.placeFood()
         else:
             self.food=foodPosition
+            print(foodPosition)
 
     def play_step(self):
 #1 collect user input
@@ -68,6 +69,36 @@ class SnakeGame:
             game_over=True
 #4 place new food or just move
         # self.placeFood()
+        if self.body[0]==self.food:
+            DirectionTailValue=self.body[-1]-self.body[-2]
+
+            if DirectionTailValue==-1:
+                # DirectionTail='LEFT'
+                self.body.append(self.body[-1]-1)
+                self.food=None
+                self.placeFood()
+                self.score +=1
+            if DirectionTailValue==1:
+                # DirectionTail='RIGHT'
+                self.body.append(self.body[-1]+1)
+                self.food=None
+                self.placeFood()
+                self.score +=1
+            if DirectionTailValue==-32:
+                # DirectionTail='TOP'
+                self.body.append(self.body[-1]-32)
+                self.food=None
+                self.placeFood()
+                self.score +=1
+            if DirectionTailValue==32:
+                # DirectionTail='DOWN'
+                self.body.append(self.body[-1]+32)
+                self.food=None
+                self.placeFood()
+                self.score +=1
+
+        
+
 #5 update ui and clock
         self.updateUi()
         self.clock.tick(SPEED)
@@ -117,7 +148,6 @@ class SnakeGame:
         if isFirstBodyPartFirstCol==True and isFirstBodyPartLastCol==True:
             notTheSameCol=True
 
-        print('hello',notTheSameCol)
         if notTheSameCol:
             return True
 
@@ -144,7 +174,7 @@ class SnakeGame:
         self.body=body
 
     def updateUi(self):
-        self.display.fill(WHITE)
+        self.display.fill(BLACK)
         for point in self.body:
             row=math.floor(point/32)
             if point%32==0:
