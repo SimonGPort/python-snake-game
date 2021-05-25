@@ -43,7 +43,6 @@ class SnakeGame:
             self.placeFood()
         else:
             self.food=foodPosition
-            print(foodPosition)
 
     def play_step(self):
 #1 collect user input
